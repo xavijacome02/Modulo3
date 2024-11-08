@@ -21,20 +21,24 @@ public class ProveedoresBDD {
 		Proveedores proveedor = null;
 		try {
 			con = ConexionBDD.obtenerConexion();
-			ps = con.prepareStatement("select identificador, tipo_documento, nombre, telefono, correo, direccion from proveedores "
-			        + "where upper(nombre) like ?");
+			ps = con.prepareStatement("select identificador,tipo_documento,tp.descripcion,nombre,telefono,correo,direccion "
+					+ "from proveedores prov,tipo_documento tp "
+					+ "where prov.tipo_documento=tp.codigo "
+			        + "and upper(nombre) like ?");
 
 			ps.setString(1, "%"+subcadena.toUpperCase()+"%"); //touppercase MAYUSCULA/MINUSCULA ES COMO EL UPPER EN SQL
 			rs = ps.executeQuery();
 
 			while (rs.next()) {
 				String identificador = rs.getString("identificador");
-				String tipoDocumento = rs.getString("tipo_documento");
+				String codigoTipoDocumento = rs.getString("tipo_documento");
+				String descripcionTD =rs.getString("descripcion");
 				String nombre = rs.getString("nombre");
 				String telefono = rs.getString("telefono");
 				String correo = rs.getString("correo");
 				String direccion = rs.getString("direccion");
-				proveedor = new Proveedores(identificador,tipoDocumento,nombre,telefono,correo,direccion);
+				TipoDocumento tipDoc =new TipoDocumento(codigoTipoDocumento,descripcionTD);
+				proveedor = new Proveedores(identificador,tipDoc,nombre,telefono,correo,direccion);
 				proveedores.add(proveedor);
 			}
 		} catch (KrakedevException e) {
@@ -48,31 +52,5 @@ public class ProveedoresBDD {
 	}
 	
 	
-	public ArrayList<TipoDocumento> recuperarTodos() throws KrakedevException {
-		ArrayList<TipoDocumento> arregloTipoDocumento = new ArrayList<>();
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		TipoDocumento tipoDocumento = null;
-		try {
-			con = ConexionBDD.obtenerConexion();
-			ps = con.prepareStatement("select codigo,descripcion from tipo_documento");
-			rs = ps.executeQuery();
-
-			while (rs.next()) {
-				String codigo = rs.getString("codigo");
-				String descripcion = rs.getString("descripcion");
-				
-				tipoDocumento = new TipoDocumento(codigo,descripcion);
-				arregloTipoDocumento.add(tipoDocumento);
-			}
-		} catch (KrakedevException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new KrakedevException("Error al consultar. Detalle: " + e.getMessage());
-		}
-		return arregloTipoDocumento;
-	}
+	
 }
