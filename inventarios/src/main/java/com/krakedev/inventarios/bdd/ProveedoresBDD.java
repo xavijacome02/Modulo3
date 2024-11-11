@@ -39,7 +39,7 @@ public class ProveedoresBDD {
 				String correo = rs.getString("correo");
 				String direccion = rs.getString("direccion");
 				TipoDocumento tipDoc = new TipoDocumento(codigoTipoDocumento, descripcionTD);
-				proveedor = new Proveedores(identificador, tipDoc, nombre, telefono, correo, direccion);
+				proveedor = new Proveedores(identificador, tipDoc, nombre, telefono, correo,direccion);
 				proveedores.add(proveedor);
 			}
 		} catch (KrakedevException e) {
