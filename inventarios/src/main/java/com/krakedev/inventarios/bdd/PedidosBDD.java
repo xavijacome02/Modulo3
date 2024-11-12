@@ -75,6 +75,10 @@ public class PedidosBDD {
 		PreparedStatement psDet = null;
 		DetallePedido det = null;
 		ResultSet rs = null;
+		PreparedStatement psHis=null;
+		
+		Date fechaActual = new Date();
+		java.sql.Timestamp finsertechaHoraActual = new java.sql.Timestamp(fechaActual.getTime());
 
 		try {
 			con = ConexionBDD.obtenerConexion();
@@ -82,6 +86,9 @@ public class PedidosBDD {
 			ps.setString(1, "R");
 			ps.setInt(2, pedido.getCodigo());
 			ps.executeUpdate();
+			
+			
+			
 			ArrayList<DetallePedido> detallesPedidos = pedido.getDetalles();
 
 			for (int i = 0; i < detallesPedidos.size(); i++) {
@@ -90,15 +97,15 @@ public class PedidosBDD {
 				psDet = con.prepareStatement("select cantidad_solicitada from detalle_pedido where codigo=?");
 				psDet.setInt(1, pedido.getCodigo());
 				rs = psDet.executeQuery();
-				BigDecimal cantidadSolicitada=null;
+				BigDecimal cantidadSolicitada = null;
 				if (rs.next()) {
-					 cantidadSolicitada = rs.getBigDecimal("cantidad_solicitada");
+					cantidadSolicitada = rs.getBigDecimal("cantidad_solicitada");
 				}
-				
+
 				psDet = con.prepareStatement(
 						"update detalle_pedido set cantidad_recibida=?, subtotal=? " + "where codigo=?");
 				psDet.setInt(1, det.getCantidadRecibida());
-				
+
 				BigDecimal pv = det.getProducto().getPrecioVenta();
 				BigDecimal subTotal = pv.multiply(cantidadSolicitada);
 				psDet.setBigDecimal(2, subTotal);
@@ -107,7 +114,14 @@ public class PedidosBDD {
 				System.out.println("cantidad recibe" + pv);
 				System.out.println("cantidad solicitada" + cantidadSolicitada);
 				System.out.println("subtotal" + subTotal);
+				
 			}
+			psHis=con.prepareStatement("insert into historial_stock(fecha,referencia,producto,cantidad) values(?,?,?,?)");
+			psHis.setTimestamp(1, finsertechaHoraActual);
+			psHis.setString(2, "PEDIDO "+ pedido.getCodigo());
+			psHis.setInt(3,det.getCodigo() );
+			psHis.setInt(4,det.getCantidadRecibida());
+			psHis.executeUpdate();
 
 		} catch (KrakedevException e) {
 			e.printStackTrace();
@@ -117,4 +131,6 @@ public class PedidosBDD {
 		}
 
 	}
+	
+	
 }
