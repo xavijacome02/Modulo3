@@ -73,9 +73,11 @@ public class VentaBDD {
 				            psHis.setInt(4, det.getCantidad() * -1); // Cantidad negativa para indicar venta
 				            psHis.executeUpdate();
 				}
-				BigDecimal totalSinIva = BigDecimal.ZERO;
-		        BigDecimal totalIva = BigDecimal.ZERO;
-		        BigDecimal totalConIva = BigDecimal.ZERO;
+				
+				
+				BigDecimal totalSinIva = new BigDecimal("0");
+		        BigDecimal totalIva = new BigDecimal("0");
+		        BigDecimal totalConIva = new BigDecimal("0");
 
 		        for (int i = 0; i < detallesventa.size(); i++) {
 		            det = detallesventa.get(i);

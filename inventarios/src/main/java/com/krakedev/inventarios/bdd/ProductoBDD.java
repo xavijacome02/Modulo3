@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.krakedev.inventarios.entidades.Categoria;
 import com.krakedev.inventarios.entidades.Producto;
 import com.krakedev.inventarios.entidades.UnidadMedida;
 import com.krakedev.inventarios.excepciones.KrakedevException;
@@ -102,5 +103,41 @@ public class ProductoBDD {
 			}
 
 		}
+	}
+	
+	
+	public void actualizar(Producto producto)  throws KrakedevException{
+		Connection con = null;
+		PreparedStatement ps = null;		
+		try {
+			con=ConexionBDD.obtenerConexion();
+			ps=con.prepareStatement("update productos set nombre=?,udm=?,precio_venta=?,tiene_iva=?,coste=?,categoria=?,stock=? where codigo=?");
+			ps.setString(1, producto.getNombre());
+			ps.setString(2, producto.getUdm().getNombre());
+			ps.setBigDecimal(3, producto.getPrecioVenta());
+			ps.setBoolean(4, producto.isTieneIVA());
+			ps.setBigDecimal(5, producto.getCoste());
+			ps.setInt(6, producto.getCategoria().getCodigo());
+			ps.setInt(7,producto.getStock());
+			ps.setInt(8,producto.getCodigo());
+			
+			ps.executeUpdate();
+		} catch (KrakedevException e) {
+			e.printStackTrace();
+			throw new KrakedevException("Error al actualizar Producto " + e.getMessage());
+
+		}catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+
+		}
+
 	}
 }

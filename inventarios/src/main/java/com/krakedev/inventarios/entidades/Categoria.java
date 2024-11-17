@@ -1,14 +1,14 @@
 package com.krakedev.inventarios.entidades;
 
 public class Categoria {
-	private int codigoCat;
+	private int codigo;
 	private String nombre;
-	private Categoria codigoPadre;
-	public int getCodigoCat() {
-		return codigoCat;
+	private Categoria categoriaPadre;
+	public int getCodigo() {
+		return codigo;
 	}
-	public void setCodigoCat(int codigoCat) {
-		this.codigoCat = codigoCat;
+	public void setCodigo(int codigo) {
+		this.codigo = codigo;
 	}
 	public String getNombre() {
 		return nombre;
@@ -16,24 +16,24 @@ public class Categoria {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	public Categoria getCodigoPadre() {
-		return codigoPadre;
+	public Categoria getCategoriaPadre() {
+		return categoriaPadre;
 	}
-	public void setCodigoPadre(Categoria codigoPadre) {
-		this.codigoPadre = codigoPadre;
+	public void setCategoriaPadre(Categoria categoriaPadre) {
+		this.categoriaPadre = categoriaPadre;
 	}
 	public Categoria() {
 		super();
 	}
-	public Categoria(int codigoCat, String nombre, Categoria codigoPadre) {
+	public Categoria(int codigo, String nombre, Categoria categoriaPadre) {
 		super();
-		this.codigoCat = codigoCat;
+		this.codigo = codigo;
 		this.nombre = nombre;
-		this.codigoPadre = codigoPadre;
+		this.categoriaPadre = categoriaPadre;
 	}
 	@Override
 	public String toString() {
-		return "Categoria [codigoCat=" + codigoCat + ", nombre=" + nombre + ", codigoPadre=" + codigoPadre + "]";
+		return "Categoria [codigo=" + codigo + ", nombre=" + nombre + ", categoriaPadre=" + categoriaPadre + "]";
 	}
 	
 }

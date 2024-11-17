@@ -2,7 +2,7 @@ package com.krakedev.inventarios.entidades;
 
 import java.math.BigDecimal;
 
-import com.krakedev.inventarios.bdd.Categoria;
+
 
 public class Producto {
 	private int codigo;
